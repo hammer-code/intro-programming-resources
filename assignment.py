@@ -5,31 +5,29 @@ def print_separator():
     print('--------------')
 
 class Options(object):
-    def __init__(self, options: list, answer_index: int):
+    def __init__(self, options: list):
         if len(options) != 4:
             raise ValueError("options should have 4 elements")
 
-        if not self.is_valid_answer_index(answer_index):
-            raise ValueError("answer_index should be between 0 - 4")
-
         self.options = options
-        self.answer_index = answer_index
 
     def print(self):
         for index in range(len(self.options)):
             option = self.options[index]
             print(f"{index}) {option}")
 
-    def is_correct_answer(self, chosen_index: int):
-        return self.answer_index == chosen_index
+class Question(object):
+    def __init__(self, text: str, options: Options, answer_index: int):
+        self.text = text
+        self.options = options
+
+        if not self.is_valid_answer_index(answer_index):
+            raise ValueError("answer_index should be between 0 - 4")
+
+        self.answer_index = answer_index
 
     def is_valid_answer_index(self, answer_index: int):
         return answer_index >= 0 and answer_index <= 4
-
-class Question(object):
-    def __init__(self, text: str, options: Options):
-        self.text = text
-        self.options = options
 
     def get_answer(self):
         answered = False
@@ -42,15 +40,19 @@ class Question(object):
                 print("Should be number")
                 continue
 
-            if self.options.is_valid_answer_index(answer):
+            if self.is_valid_answer_index(answer):
                 answered = True
             else:
                 print("Please choose between 0-3")
 
         return answer
 
+    def is_correct_answer(self, chosen_index: int):
+        return self.answer_index == chosen_index
+
+
     def is_correct(self, answer: int):
-        return self.options.is_correct_answer(answer)
+        return self.is_correct_answer(answer)
 
     def ask(self, number):
         print(f"{number}) {self.text}")
