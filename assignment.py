@@ -1,8 +1,6 @@
 from typing import List
 import random
-
-def print_separator():
-    print('--------------')
+from util import print_separator, index_to_char, char_to_index
 
 class Options(object):
     def __init__(self, options: list):
@@ -14,9 +12,10 @@ class Options(object):
     def print(self):
         for index in range(len(self.options)):
             option = self.options[index]
-            print(f"{index}) {option}")
+            print(f"{index_to_char(index)}) {option}")
 
 class Question(object):
+    valid_answers = ['a', 'b', 'c', 'd']
     def __init__(self, text: str, options: Options, answer_index: int):
         self.text = text
         self.options = options
@@ -29,27 +28,24 @@ class Question(object):
     def is_valid_answer_index(self, answer_index: int):
         return answer_index >= 0 and answer_index <= 4
 
+    def is_valid_answer(self, answer: str):
+        return answer in self.valid_answers
+
     def get_answer(self):
         answered = False
         answer = None
         while not answered:
             answer = input("Your answer: ")
-            try:
-                answer = int(answer)
-            except ValueError:
-                print("Should be number")
-                continue
 
-            if self.is_valid_answer_index(answer):
+            if self.is_valid_answer(answer):
                 answered = True
             else:
-                print("Please choose between 0-3")
+                print("Please choose either {}".format(",".join(self.valid_answers)))
 
-        return answer
+        return char_to_index(answer)
 
     def is_correct_answer(self, chosen_index: int):
         return self.answer_index == chosen_index
-
 
     def is_correct(self, answer: int):
         return self.is_correct_answer(answer)
