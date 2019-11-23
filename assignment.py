@@ -75,7 +75,7 @@ class Assigments:
 
         n = 1
         for q in self.questions:
-            self.answers.append(q.ask(1))
+            self.answers.append(q.ask(n))
             print_separator()
             n += 1
 
