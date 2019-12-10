@@ -1,5 +1,8 @@
-# hammercode programming intro course challenge solution
+# challenge-1
 
+Create simple program for answering questions
+
+## Run the program
 To run it:
 
 ```sh
